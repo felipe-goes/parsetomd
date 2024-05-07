@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 )
 
 // Make the query to stack exchange's api
@@ -17,7 +16,9 @@ func Query(site, query, tag string) {
 	params := url.Values{}
 	params.Add("site", site)
 	params.Add("q", query)
-	params.Add("tagged", tag)
+	if tag != "" {
+		params.Add("tagged", tag)
+	}
 	params.Add("accepted", "true")
 	params.Add("key", "rPwuqWr4Kp4R)yT6b1w*ZQ((")
 
@@ -42,8 +43,6 @@ func Query(site, query, tag string) {
 	if err := json.Unmarshal(body, &apiResponse); err != nil {
 		log.Fatalf("Failed to unmarshal JSON response: %v", err)
 	}
-
-	os.WriteFile("./arquivo.json", body, 6604)
 
 	// Print the remaining quota and the titles and links of the questions
 	fmt.Printf("# %s\n\n", query)

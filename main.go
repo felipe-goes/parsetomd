@@ -10,12 +10,19 @@ import (
 func main() {
 	// Check if there are any command-line arguments (excluding the program name itself)
 	// expected: (site query tag)
-	if len(os.Args) != 4 {
-		fmt.Println(api.Help)
-	} else {
-		site  := os.Args[1]
+	switch len(os.Args) {
+	case 3:
+		// without tag
+		site := os.Args[1]
 		query := os.Args[2]
-		tag   := os.Args[3]
+		api.Query(site, query, "")
+	case 4:
+		// with tag
+		site := os.Args[1]
+		query := os.Args[2]
+		tag := os.Args[3]
 		api.Query(site, query, tag)
+	default:
+		fmt.Println(api.Help)
 	}
 }
